@@ -772,7 +772,10 @@ class LabelViewer2(object):
         if self.with_drivable:
             self.draw_drivable(objects)
         if self.with_lane:
-            self.draw_lanes(objects)
+            try:
+                self.draw_lanes(objects)
+            except ValueError as e:
+                pass
         if self.with_box2d:
             for b in get_boxes(objects):
                 attributes = {}
