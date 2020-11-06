@@ -772,10 +772,7 @@ class LabelViewer2(object):
         if self.with_drivable:
             self.draw_drivable(objects)
         if self.with_lane:
-            try:
-                self.draw_lanes(objects)
-            except ValueError as e:
-                pass
+            self.draw_lanes(objects)
         if self.with_box2d:
             for b in get_boxes(objects):
                 attributes = {}
@@ -902,15 +899,18 @@ class LabelViewer2(object):
                 color = (0, (obj["id"] // 255) / 255, (obj["id"] % 255) / 255.0)
                 alpha = 1
             for poly in obj["poly2d"]:
-                self.ax.add_patch(
-                    self.poly2patch(
-                        poly["vertices"],
-                        poly["types"],
-                        closed=poly["closed"],
-                        alpha=alpha,
-                        color=color,
+                try:
+                    self.ax.add_patch(
+                        self.poly2patch(
+                            poly["vertices"],
+                            poly["types"],
+                            closed=poly["closed"],
+                            alpha=alpha,
+                            color=color,
+                        )
                     )
-                )
+                except ValueError as e:
+                    pass
 
     def draw_other_poly2d(self, objects):
         color_mode = self.color_mode
