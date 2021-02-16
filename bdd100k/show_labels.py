@@ -35,8 +35,8 @@ def parse_args():
         "-l",
         "--label",
         required=True,
-        help="corresponding bounding box annotation " "(json file)",
         type=str,
+        help="corresponding bounding box annotation " "(json file)",
     )
     parser.add_argument(
         "-s",
@@ -700,7 +700,8 @@ class LabelViewer2(object):
         self.with_lane = True
         self.with_box2d = False
         self.with_segment = False
-        self.color_mode = "instance"
+        # self.color_mode = "instance"
+        self.color_mode = "random"
         self.drivable_mode = False
         self.with_post = True
 
@@ -775,6 +776,7 @@ class LabelViewer2(object):
             try:
                 self.draw_lanes(objects)
             except ValueError as e:
+                print("Skipped:", frame["name"])
                 pass
         if self.with_box2d:
             for b in get_boxes(objects):
